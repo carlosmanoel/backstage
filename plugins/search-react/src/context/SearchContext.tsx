@@ -100,11 +100,6 @@ const searchInitialState: SearchContextState = {
   types: [],
 };
 
-/**
- * Creates a new local search context.
- * @remarks Use it for isolating this context from parent search contexts.
- * @internal
- */
 const useSearchContextValue = (
   initialValue: SearchContextState = searchInitialState,
 ) => {
@@ -165,6 +160,25 @@ const useSearchContextValue = (
   return value;
 };
 
+export type LocalSearchContextProps = PropsWithChildren<{
+  initialState?: SearchContextState;
+}>;
+
+const LocalSearchContext = (props: SearchContextProviderProps) => {
+  const { initialState, children } = props;
+  const value = useSearchContextValue(initialState);
+
+  return (
+    <AnalyticsContext
+      attributes={{ searchTypes: value.types.sort().join(',') }}
+    >
+      <SearchContext.Provider value={createVersionedValueMap({ 1: value })}>
+        {children}
+      </SearchContext.Provider>
+    </AnalyticsContext>
+  );
+};
+
 /**
  * Props for {@link SearchContextProvider}
  *
@@ -176,7 +190,7 @@ export type SearchContextProviderProps = PropsWithChildren<{
    * If true, don't create a child context if there is a parent one already defined.
    * @remarks Default to false.
    */
-  useParentContext?: boolean;
+  parentContext?: boolean;
 }>;
 
 /**
@@ -184,19 +198,14 @@ export type SearchContextProviderProps = PropsWithChildren<{
  * Search context provider which gives you access to shared state between search components
  */
 export const SearchContextProvider = (props: SearchContextProviderProps) => {
-  const { initialState, useParentContext, children } = props;
+  const { initialState, parentContext, children } = props;
   const hasParentContext = useSearchContextCheck();
-  const value = useSearchContextValue(initialState);
 
-  return useParentContext && hasParentContext ? (
+  return parentContext && hasParentContext ? (
     <>{children}</>
   ) : (
-    <AnalyticsContext
-      attributes={{ searchTypes: value.types.sort().join(',') }}
-    >
-      <SearchContext.Provider value={createVersionedValueMap({ 1: value })}>
-        {children}
-      </SearchContext.Provider>
-    </AnalyticsContext>
+    <LocalSearchContext initialState={initialState}>
+      {children}
+    </LocalSearchContext>
   );
 };

@@ -98,7 +98,7 @@ describe('SearchAutocomplete', () => {
     );
 
     await waitFor(() => {
-      expect(query).toBeCalledWith({
+      expect(query).toHaveBeenCalledWith({
         filters: {},
         pageCursor: undefined,
         term: options[0],
@@ -120,7 +120,7 @@ describe('SearchAutocomplete', () => {
     );
 
     await waitFor(() => {
-      expect(query).toBeCalledWith({
+      expect(query).toHaveBeenCalledWith({
         filters: {},
         pageCursor: undefined,
         term: options[0],
@@ -131,7 +131,7 @@ describe('SearchAutocomplete', () => {
     await userEvent.click(screen.getByLabelText('Clear'));
 
     await waitFor(() => {
-      expect(query).toBeCalledWith({
+      expect(query).toHaveBeenCalledWith({
         filters: {},
         pageCursor: undefined,
         term: '',
@@ -157,7 +157,7 @@ describe('SearchAutocomplete', () => {
     await userEvent.click(screen.getByText(options[0]));
 
     await waitFor(() => {
-      expect(query).toBeCalledWith({
+      expect(query).toHaveBeenCalledWith({
         filters: {},
         pageCursor: undefined,
         term: options[0],

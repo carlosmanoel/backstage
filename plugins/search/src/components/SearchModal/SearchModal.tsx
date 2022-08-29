@@ -194,7 +194,7 @@ export const SearchModal = ({
       hidden={hidden}
     >
       {open && (
-        <SearchContextProvider useParentContext>
+        <SearchContextProvider parentContext>
           {(children && children({ toggleModal })) ?? (
             <Modal toggleModal={toggleModal} />
           )}

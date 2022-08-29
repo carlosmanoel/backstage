@@ -22,6 +22,7 @@ import React, {
   useCallback,
   forwardRef,
   ComponentType,
+  ForwardRefExoticComponent,
 } from 'react';
 import useDebounce from 'react-use/lib/useDebounce';
 
@@ -63,9 +64,9 @@ export type SearchBarBaseProps = Omit<InputBaseProps, 'onChange'> & {
  *
  * @public
  */
-export const SearchBarBase = forwardRef<unknown, SearchBarBaseProps>(
-  (
-    {
+export const SearchBarBase: ForwardRefExoticComponent<SearchBarBaseProps> =
+  forwardRef((props, ref) => {
+    const {
       onChange,
       onKeyDown = () => {},
       onClear = () => {},
@@ -74,12 +75,12 @@ export const SearchBarBase = forwardRef<unknown, SearchBarBaseProps>(
       clearButton = true,
       fullWidth = true,
       value: defaultValue,
+      placeholder: defaultPlaceholder,
       inputProps: defaultInputProps = {},
       endAdornment: defaultEndAdornment,
-      ...props
-    },
-    ref,
-  ) => {
+      ...rest
+    } = props;
+
     const configApi = useApi(configApiRef);
     const [value, setValue] = useState<string>('');
 
@@ -115,9 +116,9 @@ export const SearchBarBase = forwardRef<unknown, SearchBarBaseProps>(
       }
     }, [onChange, onClear]);
 
-    const placeholder = `Search in ${
-      configApi.getOptionalString('app.title') || 'Backstage'
-    }`;
+    const placeholder =
+      defaultPlaceholder ??
+      `Search in ${configApi.getOptionalString('app.title') || 'Backstage'}`;
 
     const startAdornment = (
       <InputAdornment position="start">
@@ -148,12 +149,11 @@ export const SearchBarBase = forwardRef<unknown, SearchBarBaseProps>(
           fullWidth={fullWidth}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
-          {...props}
+          {...rest}
         />
       </TrackSearch>
     );
-  },
-);
+  });
 
 /**
  * Props for {@link SearchBar}.
@@ -164,7 +164,7 @@ export type SearchBarProps = Partial<SearchBarBaseProps>;
 
 const withContext = (Component: ComponentType<SearchBarProps>) => {
   return forwardRef<unknown, SearchBarProps>((props, ref) => (
-    <SearchContextProvider useParentContext>
+    <SearchContextProvider parentContext>
       <Component {...props} ref={ref} />
     </SearchContextProvider>
   ));
@@ -175,40 +175,40 @@ const withContext = (Component: ComponentType<SearchBarProps>) => {
  *
  * @public
  */
-export const SearchBar = withContext(
-  forwardRef<unknown, SearchBarProps>(
-    ({ value: initialValue = '', onChange, ...rest }, ref) => {
-      const { term, setTerm } = useSearch();
+export const SearchBar: ForwardRefExoticComponent<SearchBarProps> = withContext(
+  forwardRef((props, ref) => {
+    const { value: initialValue = '', onChange, ...rest } = props;
 
-      useEffect(() => {
-        if (initialValue) {
-          setTerm(String(initialValue));
+    const { term, setTerm } = useSearch();
+
+    useEffect(() => {
+      if (initialValue) {
+        setTerm(String(initialValue));
+      }
+    }, [initialValue, setTerm]);
+
+    const handleChange = useCallback(
+      (newValue: string) => {
+        if (onChange) {
+          onChange(newValue);
+        } else {
+          setTerm(newValue);
         }
-      }, [initialValue, setTerm]);
+      },
+      [onChange, setTerm],
+    );
 
-      const handleChange = useCallback(
-        (newValue: string) => {
-          if (onChange) {
-            onChange(newValue);
-          } else {
-            setTerm(newValue);
-          }
-        },
-        [onChange, setTerm],
-      );
-
-      return (
-        <AnalyticsContext
-          attributes={{ pluginId: 'search', extension: 'SearchBar' }}
-        >
-          <SearchBarBase
-            {...rest}
-            ref={ref}
-            value={term}
-            onChange={handleChange}
-          />
-        </AnalyticsContext>
-      );
-    },
-  ),
+    return (
+      <AnalyticsContext
+        attributes={{ pluginId: 'search', extension: 'SearchBar' }}
+      >
+        <SearchBarBase
+          {...rest}
+          ref={ref}
+          value={term}
+          onChange={handleChange}
+        />
+      </AnalyticsContext>
+    );
+  }),
 );

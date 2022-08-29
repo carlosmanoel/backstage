@@ -21,5 +21,6 @@ export {
 
 export type {
   SearchAutocompleteProps,
+  SearchAutocompleteComponent,
   SearchAutocompleteDefaultOptionProps,
 } from './SearchAutocomplete';

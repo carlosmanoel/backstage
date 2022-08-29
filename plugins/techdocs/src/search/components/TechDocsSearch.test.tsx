@@ -67,7 +67,7 @@ describe('<TechDocsSearch />', () => {
 
       await emptyResults;
       expect(querySpy).toHaveBeenCalled();
-      expect(rendered.getByTestId('techdocs-search-bar')).toBeInTheDocument();
+      expect(rendered.getByTestId('search-autocomplete')).toBeInTheDocument();
     });
   });
 
@@ -99,7 +99,7 @@ describe('<TechDocsSearch />', () => {
         types: ['techdocs'],
       });
 
-      const autocomplete = rendered.getByTestId('techdocs-search-bar');
+      const autocomplete = rendered.getByTestId('search-autocomplete');
       const input = within(autocomplete).getByRole('textbox');
       autocomplete.click();
       autocomplete.focus();
