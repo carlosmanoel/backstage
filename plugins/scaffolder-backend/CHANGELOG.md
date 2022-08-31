@@ -1,5 +1,21 @@
 # @backstage/plugin-scaffolder-backend
 
+## 1.6.0-next.2
+
+### Minor Changes
+
+- d1f7ba58e3: Added `repositoryId` output when create a repository in Azure
+
+### Patch Changes
+
+- eadf56bbbf: Bump `git-url-parse` version to `^13.0.0`
+- 87ec2ba4d6: Updated dependency `msw` to `^0.46.0`.
+- Updated dependencies
+  - @backstage/backend-common@0.15.1-next.2
+  - @backstage/integration@1.3.1-next.1
+  - @backstage/plugin-catalog-backend@1.4.0-next.2
+  - @backstage/catalog-client@1.0.5-next.1
+
 ## 1.6.0-next.1
 
 ### Minor Changes

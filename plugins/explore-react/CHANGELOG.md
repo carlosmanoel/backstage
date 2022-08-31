@@ -1,5 +1,13 @@
 # @backstage/plugin-explore-react
 
+## 0.0.21-next.2
+
+### Patch Changes
+
+- 87ec2ba4d6: Updated dependency `msw` to `^0.46.0`.
+- Updated dependencies
+  - @backstage/core-plugin-api@1.0.6-next.2
+
 ## 0.0.21-next.1
 
 ### Patch Changes

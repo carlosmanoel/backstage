@@ -1,5 +1,16 @@
 # @backstage/backend-common
 
+## 0.15.1-next.2
+
+### Patch Changes
+
+- eadf56bbbf: Bump `git-url-parse` version to `^13.0.0`
+- 3d4f5daadf: Remove use of deprecated trimLeft/trimRight
+- 87ec2ba4d6: Updated dependency `msw` to `^0.46.0`.
+- Updated dependencies
+  - @backstage/integration@1.3.1-next.1
+  - @backstage/config-loader@1.1.4-next.1
+
 ## 0.15.1-next.1
 
 ### Patch Changes

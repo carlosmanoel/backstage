@@ -1,5 +1,15 @@
 # @backstage/cli
 
+## 0.19.0-next.2
+
+### Patch Changes
+
+- 3d4f5daadf: Remove use of deprecated trimLeft/trimRight
+- 87ec2ba4d6: Updated dependency `msw` to `^0.46.0`.
+- Updated dependencies
+  - @backstage/config-loader@1.1.4-next.1
+  - @backstage/release-manifests@0.0.6-next.1
+
 ## 0.19.0-next.1
 
 ### Minor Changes

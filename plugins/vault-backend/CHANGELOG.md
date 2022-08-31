@@ -1,5 +1,14 @@
 # @backstage/plugin-vault-backend
 
+## 0.2.2-next.2
+
+### Patch Changes
+
+- 87ec2ba4d6: Updated dependency `msw` to `^0.46.0`.
+- Updated dependencies
+  - @backstage/backend-common@0.15.1-next.2
+  - @backstage/backend-test-utils@0.1.28-next.2
+
 ## 0.2.2-next.1
 
 ### Patch Changes
